@@ -8,6 +8,7 @@ export interface DoorayTask {
   title: string;
   body?: string;
   status?: DoorayTaskStatus;
+  createdAt?: string;
 }
 
 export interface DoorayTaskComment {

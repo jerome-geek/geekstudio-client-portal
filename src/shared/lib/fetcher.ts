@@ -6,3 +6,8 @@ export async function parseJsonResponse<T>(response: Response): Promise<T> {
 
   return (await response.json()) as T;
 }
+
+export async function requestJson<T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> {
+  const response = await fetch(input, init);
+  return parseJsonResponse<T>(response);
+}

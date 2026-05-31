@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getActiveCompanyProjectByUserId } from '@/entities/company/api/company';
 import { createTask, listTasks } from '@/entities/task/api/tasks';
+import { createMockTask, isMockDoorayMode, listMockTasks } from '@/shared/lib/mock-dooray';
 import { createServerSupabaseClient } from '@/shared/lib/supabase/server';
 
 async function requireUserId() {
+  if (isMockDoorayMode()) {
+    return 'demo-user';
+  }
+
   const supabase = await createServerSupabaseClient();
   const {
     data: { user }
@@ -17,6 +22,10 @@ async function requireUserId() {
 }
 
 export async function GET() {
+  if (isMockDoorayMode()) {
+    return NextResponse.json(listMockTasks());
+  }
+
   const userId = await requireUserId();
   const project = await getActiveCompanyProjectByUserId(userId);
   const tasks = await listTasks(project.doorayProjectId);
@@ -24,6 +33,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  if (isMockDoorayMode()) {
+    const body = await request.json();
+    return NextResponse.json(createMockTask(body), { status: 201 });
+  }
+
   const userId = await requireUserId();
   const project = await getActiveCompanyProjectByUserId(userId);
   const body = await request.json();

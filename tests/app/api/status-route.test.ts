@@ -6,6 +6,11 @@ vi.mock('@/entities/task/api/status', () => ({
   updateTaskStatus
 }));
 
+vi.mock('@/shared/lib/mock-dooray', () => ({
+  isMockDoorayMode: () => false,
+  updateMockTaskStatus: vi.fn()
+}));
+
 describe('PATCH /api/tasks/[taskId]/status', () => {
   it('updates the task status and returns the payload', async () => {
     updateTaskStatus.mockResolvedValue({
