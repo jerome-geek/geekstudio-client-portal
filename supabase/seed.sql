@@ -17,3 +17,14 @@ values (
   true
 )
 on conflict (id) do nothing;
+
+-- Example:
+-- After a real user signs in once, find the user's auth ID in Supabase Auth,
+-- then connect that user to a company with a row like:
+--
+-- insert into company_members (company_id, user_id, role)
+-- values (
+--   '11111111-1111-1111-1111-111111111111',
+--   '<supabase-auth-user-id>',
+--   'admin'
+-- );

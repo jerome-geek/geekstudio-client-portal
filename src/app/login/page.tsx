@@ -1,3 +1,4 @@
+import { LoginForm } from '@/components/auth/login-form';
 import Link from 'next/link';
 
 export default function LoginPage() {
@@ -9,13 +10,16 @@ export default function LoginPage() {
           Client portal login
         </h1>
         <p className="mt-4 text-base leading-7 text-black/70">
-          Supabase authentication UI will be connected here in the next implementation steps.
+          Supabase가 설정되면 매직링크 로그인으로 연결되고, 설정 전에는 mock 보드로 바로 진입할 수 있습니다.
         </p>
+        <LoginForm />
         <Link
-          href="/board"
-          className="mt-6 inline-flex rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white"
+          href="https://supabase.com/dashboard"
+          target="_blank"
+          rel="noreferrer"
+          className="mt-6 inline-flex text-sm font-semibold text-coral"
         >
-          mock 보드로 이동
+          Supabase에서 고객사 매핑 설정하기
         </Link>
       </section>
     </main>

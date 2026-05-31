@@ -3,23 +3,33 @@ import { TaskCard } from '@/components/board/task-card';
 
 export function KanbanBoard({ groups }: { groups: DoorayTaskBoardGroup[] }) {
   return (
-    <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+    <section className="grid gap-3 xl:grid-cols-3">
       {groups.map((group) => (
         <div
           key={group.statusId}
-          className="rounded-[1.75rem] border border-black/10 bg-[#fffdf9] p-4 shadow-sm"
+          className="min-h-[720px] rounded-lg bg-[#ece9e9] p-4"
         >
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ink">{group.statusName}</h2>
-            <span className="rounded-full bg-black/5 px-3 py-1 text-xs font-semibold text-black/60">
-              {group.tasks.length}
-            </span>
+          <div className="px-2 pb-2">
+            <h2 className="text-[18px] font-bold text-[#7b7b7b]">
+              <span
+                className={
+                  group.statusName === '접수'
+                    ? 'text-[#27a745]'
+                    : group.statusName === '진행중'
+                      ? 'text-[#1e88ff]'
+                      : 'text-[#8a8a8a]'
+                }
+              >
+                {group.statusName}
+              </span>{' '}
+              <span className="font-semibold text-[#707070]">{group.tasks.length}</span>
+            </h2>
           </div>
-          <div className="mt-4 space-y-3">
+          <div className="space-y-3">
             {group.tasks.length ? (
               group.tasks.map((task) => <TaskCard key={task.id} task={task} />)
             ) : (
-              <div className="rounded-2xl border border-dashed border-black/10 p-4 text-sm text-black/45">
+              <div className="rounded-md border border-dashed border-[#d4d4d4] bg-white p-4 text-sm text-[#777]">
                 아직 업무가 없습니다.
               </div>
             )}

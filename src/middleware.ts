@@ -52,6 +52,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  const { count, error } = await supabase
+    .from('company_members')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id);
+
+  if (error || !count) {
+    return NextResponse.redirect(new URL('/unauthorized', request.url));
+  }
+
   return response;
 }
 

@@ -10,24 +10,44 @@ export function AppShell({
   actions?: React.ReactNode;
 }>) {
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#f4efe7_0%,#fcfaf6_100%)]">
-      <header className="border-b border-black/10 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-coral">
-              Geekstudio
-            </p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-ink">{title}</h1>
+    <main className="min-h-screen bg-[#f7f7f7] text-[#222]">
+      <header className="border-b border-[#dcdcdc] bg-white">
+        <div className="flex h-[70px] items-center justify-between px-5">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className="text-[21px] font-bold tracking-tight">긱스튜디오</span>
+              <span className="text-lg text-[#666]">▾</span>
+            </div>
+            <nav className="flex items-center gap-7 text-[15px] font-medium text-[#333]">
+              <Link href="#" className="flex items-center gap-2 text-[#333]">
+                <span className="text-base">⌁</span>
+                <span>대시보드</span>
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#333]">
+                <span className="text-base">☰</span>
+                <span>목록</span>
+              </Link>
+              <Link href="/board" className="flex items-center gap-2 font-semibold text-[#2f6fff]">
+                <span className="text-base">▥</span>
+                <span>보드</span>
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#333]">
+                <span className="text-base">◫</span>
+                <span>플래닝</span>
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#333]">
+                <span className="text-base">▱</span>
+                <span>타임라인</span>
+              </Link>
+            </nav>
           </div>
-          <nav className="flex items-center gap-3 text-sm font-medium text-black/70">
-            <Link href="/board" className="rounded-full px-4 py-2 hover:bg-black/5">
-              Board
-            </Link>
+          <div className="flex items-center gap-3 text-sm text-[#666]">
+            <span className="rounded-full border border-[#ddd] px-3 py-2">{title}</span>
             {actions}
-          </nav>
+          </div>
         </div>
       </header>
-      <section className="mx-auto max-w-7xl px-6 py-8">{children}</section>
+      <section className="px-1 py-3 md:px-2">{children}</section>
     </main>
   );
 }
