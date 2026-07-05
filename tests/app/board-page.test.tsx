@@ -41,6 +41,6 @@ describe('KanbanBoard', () => {
     );
 
     expect(screen.getByText('메인 화면 문구 수정')).toBeInTheDocument();
-    expect(screen.getByText('데모/1')).toBeInTheDocument();
+    expect(screen.getByText('#데모/1')).toBeInTheDocument();
   });
 });
