@@ -1,5 +1,11 @@
 export async function parseJsonResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
+    // 세션 만료 → 재로그인 유도 (브라우저에서만)
+    if (response.status === 401 && typeof window !== 'undefined') {
+      const redirectTo = encodeURIComponent(window.location.pathname);
+      window.location.href = `/login?redirectTo=${redirectTo}`;
+    }
+
     let message = `Request failed with status ${response.status}`;
     try {
       const body = (await response.json()) as { message?: string };

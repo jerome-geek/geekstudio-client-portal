@@ -41,15 +41,15 @@
 
 ## 6. 고객사·인증 (Phase 2)
 
-- [ ] 6.1 `supabase/schema.sql`에 3개 테이블 RLS 활성화 + 자기 회사 조회 정책 추가, Supabase 적용
+- [ ] 6.1 `supabase/schema.sql`에 3개 테이블 RLS 활성화 + 자기 회사 조회 정책 추가 완료 — Supabase 프로젝트 생성 후 적용만 남음
 - [ ] 6.2 `supabase/customer-onboarding.sql` 온보딩 스크립트 검증 (고객사·멤버·프로젝트 매핑 수동 등록)
-- [ ] 6.3 로그인 화면·`login-form` 완성: 이메일/비밀번호, 실패 메시지
-- [ ] 6.4 `middleware.ts` 보호 경로: 미인증 → `/login`, API 401 + 세션 만료 재로그인 유도
-- [ ] 6.5 고객사 미매핑 계정 → `/unauthorized` 차단 흐름
-- [ ] 6.6 로그아웃 (`app-shell`)
-- [ ] 6.7 `resolveProjectId()`를 세션 → `company_members` → 활성 `company_dooray_projects` 조회로 교체 (env는 로컬 폴백)
-- [ ] 6.9 `resolveAuthorLabel()`을 로그인 사용자명+고객사명으로 교체 (`[홍길동 @ ACME]` 형식), Dooray 토큰을 전용 운영 계정으로 교체
-- [ ] 6.8 타사 업무 접근 404/403 검증 포함 격리 테스트: 타 고객사 프로젝트/업무 차단, 미매핑 계정 차단
+- [x] 6.3 로그인 화면·`login-form` 완성: 이메일/비밀번호, 실패 메시지 (Supabase 미설정 시 로컬 모드 안내)
+- [x] 6.4 `middleware.ts` 보호 경로 + API 401(resolveProjectId) + 401 응답 시 클라이언트 `/login` 리다이렉트(fetcher)
+- [x] 6.5 고객사 미매핑 계정 차단: 미들웨어 `/unauthorized` 리다이렉트 + API 403
+- [x] 6.6 로그아웃 버튼 (`logout-button.tsx`, Supabase 설정 시에만 노출)
+- [x] 6.7 `resolveProjectId()` Supabase 분기 구현: 세션 → 매핑 조회, 미인증 401/미매핑 403, Supabase 미설정 시 env 폴백
+- [x] 6.9 `resolveAuthorLabel()` 로그인 사용자명+고객사명 분기 구현 (`[홍길동 @ ACME]`) — Dooray 전용 운영 계정 토큰 교체는 운영 전환 시
+- [ ] 6.8 격리 테스트: 분기 단위 테스트 완료(401/403/매핑), 실계정 통합 검증은 Supabase 적용 후
 
 ## 7. Phase 2 검증
 

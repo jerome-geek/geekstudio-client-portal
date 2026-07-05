@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { LogoutButton } from '@/components/auth/logout-button';
 
 export function AppShell({
   title,
@@ -44,6 +45,7 @@ export function AppShell({
           <div className="flex items-center gap-3 text-sm text-[#666]">
             <span className="rounded-full border border-[#ddd] px-3 py-2">{title}</span>
             {actions}
+            <LogoutButton />
           </div>
         </div>
       </header>

@@ -11,7 +11,7 @@ export default function LoginPage() {
           Client portal login
         </h1>
         <p className="mt-4 text-base leading-7 text-black/70">
-          Supabase가 설정되면 매직링크 로그인으로 연결되고, 설정 전에는 mock 보드로 바로 진입할 수 있습니다.
+          관리자가 발급한 계정으로 로그인해 주세요.
         </p>
         <Suspense fallback={null}>
           <LoginForm />
