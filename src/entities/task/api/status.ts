@@ -1,10 +1,16 @@
-import { getDoorayClient } from '@/shared/lib/dooray';
-import { parseJsonResponse } from '@/shared/lib/fetcher';
+import { doorayRequest } from '@/shared/lib/dooray';
 import type { DoorayTask } from '@/shared/models/task';
+import { getTask } from '@/entities/task/api/tasks';
 
-export async function updateTaskStatus(taskId: string, statusId: string) {
-  const response = await getDoorayClient().patch(`/tasks/${taskId}/status`, {
-    statusId
+export async function updateTaskStatus(
+  projectId: string,
+  taskId: string,
+  workflowId: string
+): Promise<DoorayTask> {
+  await doorayRequest(`/project/v1/projects/${projectId}/posts/${taskId}/set-workflow`, {
+    method: 'POST',
+    body: { workflowId }
   });
-  return parseJsonResponse<DoorayTask>(response);
+
+  return getTask(projectId, taskId);
 }

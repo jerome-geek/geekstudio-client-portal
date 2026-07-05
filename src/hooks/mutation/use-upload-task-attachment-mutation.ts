@@ -19,6 +19,7 @@ export function useUploadTaskAttachmentMutation(taskId: string) {
       });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: taskKeys.attachments(taskId) });
       queryClient.invalidateQueries({ queryKey: taskKeys.detail(taskId) });
     }
   });

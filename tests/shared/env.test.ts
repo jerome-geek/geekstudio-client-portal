@@ -13,7 +13,8 @@ describe('envSchema', () => {
       NEXT_PUBLIC_SUPABASE_ANON_KEY: 'anon-key',
       SUPABASE_SERVICE_ROLE_KEY: 'service-role-key',
       DOORAY_BASE_URL: 'https://api.dooray.example.com',
-      DOORAY_API_TOKEN: 'dooray-token'
+      DOORAY_API_TOKEN: 'dooray-token',
+      DOORAY_PROJECT_ID: 'project-1'
     });
 
     expect(result.success).toBe(true);
@@ -31,7 +32,8 @@ describe('envSchema', () => {
       serverEnvSchema.safeParse({
         SUPABASE_SERVICE_ROLE_KEY: 'service-role-key',
         DOORAY_BASE_URL: 'https://api.dooray.example.com',
-        DOORAY_API_TOKEN: 'dooray-token'
+        DOORAY_API_TOKEN: 'dooray-token',
+        DOORAY_PROJECT_ID: 'project-1'
       }).success
     ).toBe(true);
   });

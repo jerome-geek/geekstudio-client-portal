@@ -1,48 +1,43 @@
 'use client';
 
-type FilterOption = {
-  label: string;
-  value: string;
-};
-
-const FILTER_OPTIONS: FilterOption[] = [
-  { label: '담당자: 전체', value: 'assignee' },
-  { label: '태그: 전체', value: 'tag' },
-  { label: '우선 순위: 전체', value: 'priority' }
-];
-
 export function BoardToolbar({
   query,
   onQueryChange,
-  onToggleNewTask
+  onToggleNewTask,
+  onRefresh,
+  isRefreshing
 }: {
   query: string;
   onQueryChange: (value: string) => void;
   onToggleNewTask: () => void;
+  onRefresh: () => void;
+  isRefreshing?: boolean;
 }) {
   return (
-    <div className="border-b border-[#dedede] bg-white">
+    <div className="border-b border-black/[0.08] bg-white">
       <div className="flex flex-col gap-3 px-4 py-3 xl:flex-row xl:items-center xl:justify-between">
-        <div className="flex w-full max-w-[350px] items-center gap-3 rounded-md bg-[#f4f4f4] px-4 py-3 text-sm text-[#888]">
-          <span className="text-lg">⌕</span>
+        <div className="flex w-full max-w-[350px] items-center gap-2 rounded-lg bg-[#F5F5F7] px-3 py-2.5 text-sm">
+          <span className="text-[#6E6E73]">⌕</span>
           <input
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder="제목 검색"
-            className="w-full bg-transparent text-[15px] text-[#333] outline-none placeholder:text-[#9b9b9b]"
+            className="w-full bg-transparent text-[15px] text-[#1D1D1F] outline-none placeholder:text-[#6E6E73]"
           />
         </div>
-        <div className="flex flex-wrap items-center gap-6 text-[15px] font-medium text-[#444]">
-          {FILTER_OPTIONS.map((filter) => (
-            <button key={filter.value} type="button" className="flex items-center gap-1 hover:text-black">
-              <span>{filter.label}</span>
-              <span className="text-xs text-[#666]">▾</span>
-            </button>
-          ))}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={isRefreshing}
+            className="h-11 rounded-lg bg-[#F5F5F7] px-4 text-sm font-medium text-[#1D1D1F] transition-colors hover:bg-[#ECECEE] disabled:opacity-50"
+          >
+            {isRefreshing ? '새로고침 중…' : '새로고침'}
+          </button>
           <button
             type="button"
             onClick={onToggleNewTask}
-            className="rounded-md border border-[#d8d8d8] bg-white px-3 py-2 text-sm font-semibold text-[#2f6fff]"
+            className="h-11 rounded-lg bg-[#0071E3] px-4 text-sm font-semibold text-white transition-colors hover:bg-[#0077ED]"
           >
             + 새 업무
           </button>

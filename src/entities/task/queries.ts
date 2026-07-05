@@ -1,7 +1,20 @@
 import { queryOptions } from '@tanstack/react-query';
-import { taskKeys } from '@/hooks/queryKeys';
+import { taskKeys, workflowKeys } from '@/hooks/queryKeys';
 import { requestJson } from '@/shared/lib/fetcher';
-import type { DoorayTask, DoorayTaskComment } from '@/shared/models/task';
+import type {
+  DoorayTask,
+  DoorayTaskAttachment,
+  DoorayTaskComment,
+  DoorayTaskStatus
+} from '@/shared/models/task';
+
+export function workflowsOptions() {
+  return queryOptions({
+    queryKey: workflowKeys.list(),
+    queryFn: () => requestJson<DoorayTaskStatus[]>('/api/workflows'),
+    staleTime: 5 * 60 * 1000
+  });
+}
 
 export function taskBoardOptions() {
   return queryOptions({
@@ -21,5 +34,12 @@ export function taskCommentsOptions(taskId: string) {
   return queryOptions({
     queryKey: taskKeys.comments(taskId),
     queryFn: () => requestJson<DoorayTaskComment[]>(`/api/tasks/${taskId}/comments`)
+  });
+}
+
+export function taskAttachmentsOptions(taskId: string) {
+  return queryOptions({
+    queryKey: taskKeys.attachments(taskId),
+    queryFn: () => requestJson<DoorayTaskAttachment[]>(`/api/tasks/${taskId}/attachments`)
   });
 }

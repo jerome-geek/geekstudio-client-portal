@@ -1,6 +1,7 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { OverlayProvider } from 'overlay-kit';
 import { useState } from 'react';
 
 export function QueryProvider({
@@ -18,5 +19,9 @@ export function QueryProvider({
       })
   );
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <OverlayProvider>{children}</OverlayProvider>
+    </QueryClientProvider>
+  );
 }

@@ -1,46 +1,45 @@
 import { NextResponse } from 'next/server';
-import { getActiveCompanyProjectByUserId } from '@/entities/company/api/company';
 import { createTask, listTasks } from '@/entities/task/api/tasks';
+import { toErrorResponse } from '@/shared/lib/api-error';
+import { prefixAuthor, resolveAuthorLabel } from '@/shared/lib/author';
+import { resolveProjectId } from '@/shared/lib/project';
 import { createMockTask, isMockDoorayMode, listMockTasks } from '@/shared/lib/mock-dooray';
-import { createServerSupabaseClient } from '@/shared/lib/supabase/server';
-
-async function requireUserId() {
-  if (isMockDoorayMode()) {
-    return 'demo-user';
-  }
-
-  const supabase = await createServerSupabaseClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    throw new Error('Unauthorized');
-  }
-
-  return user.id;
-}
+import type { CreateTaskInput } from '@/entities/task/model/types';
 
 export async function GET() {
-  if (isMockDoorayMode()) {
-    return NextResponse.json(listMockTasks());
-  }
+  try {
+    if (isMockDoorayMode()) {
+      return NextResponse.json(listMockTasks());
+    }
 
-  const userId = await requireUserId();
-  const project = await getActiveCompanyProjectByUserId(userId);
-  const tasks = await listTasks(project.doorayProjectId);
-  return NextResponse.json(tasks);
+    const projectId = await resolveProjectId();
+    const tasks = await listTasks(projectId);
+    return NextResponse.json(tasks);
+  } catch (error) {
+    return toErrorResponse(error);
+  }
 }
 
 export async function POST(request: Request) {
-  if (isMockDoorayMode()) {
-    const body = await request.json();
-    return NextResponse.json(createMockTask(body), { status: 201 });
-  }
+  try {
+    const input = (await request.json()) as CreateTaskInput;
 
-  const userId = await requireUserId();
-  const project = await getActiveCompanyProjectByUserId(userId);
-  const body = await request.json();
-  const task = await createTask(project.doorayProjectId, body);
-  return NextResponse.json(task, { status: 201 });
+    if (!input.title?.trim()) {
+      return NextResponse.json({ message: '제목은 필수입니다.' }, { status: 400 });
+    }
+
+    if (isMockDoorayMode()) {
+      return NextResponse.json(createMockTask(input), { status: 201 });
+    }
+
+    const projectId = await resolveProjectId();
+    const authorLabel = await resolveAuthorLabel();
+    const task = await createTask(projectId, {
+      ...input,
+      body: prefixAuthor(authorLabel, input.body ?? '')
+    });
+    return NextResponse.json(task, { status: 201 });
+  } catch (error) {
+    return toErrorResponse(error);
+  }
 }

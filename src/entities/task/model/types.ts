@@ -1,6 +1,7 @@
 export interface CreateTaskInput {
   title: string;
   body?: string;
+  priority?: string;
 }
 
 export interface CreateTaskCommentInput {
@@ -8,5 +9,5 @@ export interface CreateTaskCommentInput {
 }
 
 export interface UpdateTaskStatusInput {
-  statusId: string;
+  workflowId: string;
 }

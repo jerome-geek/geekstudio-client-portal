@@ -1,5 +1,6 @@
 import { LoginForm } from '@/components/auth/login-form';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export default function LoginPage() {
   return (
@@ -12,7 +13,9 @@ export default function LoginPage() {
         <p className="mt-4 text-base leading-7 text-black/70">
           Supabase가 설정되면 매직링크 로그인으로 연결되고, 설정 전에는 mock 보드로 바로 진입할 수 있습니다.
         </p>
-        <LoginForm />
+        <Suspense fallback={null}>
+          <LoginForm />
+        </Suspense>
         <Link
           href="https://supabase.com/dashboard"
           target="_blank"

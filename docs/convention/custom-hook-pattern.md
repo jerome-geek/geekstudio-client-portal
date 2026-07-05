@@ -112,6 +112,7 @@ const createQueryFn = (type: 'code' | 'id', banners: string[]) => {
 | **Query Key Import** | 반드시 `@/hooks/queryKeys` 로부터 Destructuring | `import { reviewKeys } from '@/hooks/queryKeys'` |
 | **Entity 함수** | 응답 타입이 다르면 각각 정의 | `xxxOptions`, `xxxV2Options` |
 | **Entity 인터페이스** | `Use{HookName}Params<T>` | `UseProductReviewListV2Params<T>` |
+| **훅 파일명** | camelCase (케밥케이스 금지) | `useAppAccumulationAuth.ts` ✅  `use-app-accumulation-auth.ts` ❌ |
 
 ---
 
@@ -122,4 +123,35 @@ const createQueryFn = (type: 'code' | 'id', banners: string[]) => {
 [ ] V1, V2와 같이 응답 타입이 다른 경우 각각 별도의 Options 함수를 작성했는가?
 [ ] Entity의 인터페이스와 Options 함수가 모두 export 되어 있는가?
 [ ] 훅 레이어(Hooks)는 로직이 없는 Thin Wrapper 형태인가?
+[ ] destructuring 변수명이 훅명 기반(data → {hookName}Data, isLoading → is{HookName}Loading)으로 작성되었는가?
+[ ] 훅 파일명이 camelCase로 작성되었는가? (kebab-case 금지)
 ```
+
+---
+
+## 5. Destructuring 변수명 컨벤션
+
+훅의 반환값을 destructuring할 때, **훅명에서 `use`를 제거 + 상태 접미사** 형태로 이름을 짓습니다.
+
+```typescript
+// ❌ BAD — 임의 이름
+const { data: accumulationList } = useAccumulationHistoryList({ ... });
+const { isLoading } = useAccumulationHistoryList({ ... });
+
+// ✅ GOOD — 훅명 기반 이름
+const {
+  data: accumulationHistoryListData,
+  isLoading: isAccumulationHistoryListLoading,
+  isPending: isAccumulationHistoryListPending,
+} = useAccumulationHistoryList({ ... });
+```
+
+| 반환 속성 | 네이밍 패턴 | 예시 |
+|-----------|-------------|------|
+| `data` | `{hookName}Data` | `accumulationHistoryListData` |
+| `isLoading` | `is{HookName}Loading` | `isAccumulationHistoryListLoading` |
+| `isPending` | `is{HookName}Pending` | `isAccumulationHistoryListPending` |
+| `isError` | `is{HookName}Error` | `isAccumulationHistoryListError` |
+
+> **규칙:** 훅명의 `use` 접두사를 제거하고 camelCase를 유지한 뒤, 상태 접미사를 붙입니다.
+
