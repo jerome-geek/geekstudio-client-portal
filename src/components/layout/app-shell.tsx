@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { LogoutButton } from '@/components/auth/logout-button';
+import { useMeQuery } from '@/hooks/query/use-me-query';
 import { 
   LayoutDashboard, 
   KanbanSquare, 
@@ -26,6 +27,10 @@ export function AppShell({
 }>) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: me } = useMeQuery();
+
+  const displayName = me?.name ?? me?.email ?? '고객사 담당자';
+  const displayCompany = me?.companyName ?? 'Geekstudio Client';
 
   const navigation = [
     { name: '대시보드', href: '/', icon: LayoutDashboard },
@@ -119,10 +124,10 @@ export function AppShell({
               <div className="flex items-center gap-3">
                 <span className="hidden text-right lg:block">
                   <span className="block text-sm font-medium text-gray-800">
-                    고객사 대표님
+                    {displayName}
                   </span>
                   <span className="block text-xs text-gray-500">
-                    Geekstudio Client
+                    {displayCompany}
                   </span>
                 </span>
                 <span className="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200 text-gray-600">
