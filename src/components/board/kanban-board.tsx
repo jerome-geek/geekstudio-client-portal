@@ -37,33 +37,60 @@ function DraggableCard({ task }: { task: DoorayTaskBoardGroup['tasks'][number] }
 function BoardColumn({ group }: { group: DoorayTaskBoardGroup }) {
   const { setNodeRef, isOver } = useDroppable({ id: group.statusId });
 
-  const classColor =
-    group.statusClass === 'registered'
-      ? 'text-[#34C759]'
-      : group.statusClass === 'working'
-        ? 'text-[#0071E3]'
-        : group.statusClass === 'closed'
-          ? 'text-[#6E6E73]'
-          : 'text-[#1D1D1F]';
+  // TailAdmin-style subtle colors for columns based on status class
+  const statusThemes = {
+    registered: {
+      text: 'text-[#D08770]',
+      bg: 'bg-[#FAF6F0]',
+      border: 'border-[#EBCB8B]/40',
+      badge: 'bg-[#D08770]/10 text-[#D08770]'
+    },
+    working: {
+      text: 'text-[#3C50E0]',
+      bg: 'bg-[#F3F5FF]',
+      border: 'border-[#3C50E0]/20',
+      badge: 'bg-[#3C50E0]/10 text-[#3C50E0]'
+    },
+    closed: {
+      text: 'text-[#10B981]',
+      bg: 'bg-[#EBFDF5]',
+      border: 'border-[#10B981]/20',
+      badge: 'bg-[#10B981]/10 text-[#10B981]'
+    }
+  };
+
+  const currentTheme = statusThemes[group.statusClass as keyof typeof statusThemes] || {
+    text: 'text-gray-700',
+    bg: 'bg-[#F9FBFD]',
+    border: 'border-gray-200',
+    badge: 'bg-gray-100 text-gray-600'
+  };
 
   return (
     <div
       ref={setNodeRef}
-      className={`flex min-h-[600px] w-72 shrink-0 flex-col rounded-xl bg-[#ECECEE] p-3 transition-colors ${
-        isOver ? 'bg-[#E2E2E6]' : ''
+      className={`flex min-h-[650px] w-[310px] shrink-0 flex-col rounded-lg border bg-[#F8FAFC] p-4 transition-colors ${
+        isOver ? 'bg-slate-100 border-[#3C50E0]' : 'border-gray-200/60'
       }`}
     >
-      <div className="flex items-center gap-2 px-1 pb-3">
-        <h2 className={`text-[15px] font-semibold ${classColor}`}>{group.statusName}</h2>
-        <span className="rounded-full bg-black/[0.06] px-2 py-0.5 text-xs font-medium text-[#6E6E73]">
+      <div className="flex items-center justify-between pb-4">
+        <div className="flex items-center gap-2">
+          <span className={`h-2.5 w-2.5 rounded-full ${
+            group.statusClass === 'registered' ? 'bg-[#D08770]' :
+            group.statusClass === 'working' ? 'bg-[#3C50E0]' :
+            group.statusClass === 'closed' ? 'bg-[#10B981]' : 'bg-gray-400'
+          }`} />
+          <h2 className="text-sm font-bold text-[#1C2434]">{group.statusName}</h2>
+        </div>
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${currentTheme.badge}`}>
           {group.tasks.length}
         </span>
       </div>
-      <div className="flex flex-1 flex-col gap-2">
+      <div className="flex flex-1 flex-col gap-3">
         {group.tasks.length ? (
           group.tasks.map((task) => <DraggableCard key={task.id} task={task} />)
         ) : (
-          <div className="rounded-xl border border-dashed border-black/10 p-4 text-center text-[13px] text-[#6E6E73]">
+          <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed border-gray-200 bg-white p-6 text-center text-xs text-gray-400">
             업무 없음
           </div>
         )}
@@ -108,7 +135,7 @@ export function KanbanBoard({
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      <section className="flex gap-3 overflow-x-auto pb-2">
+      <section className="flex gap-5 overflow-x-auto pb-4">
         {groups.map((group) => (
           <BoardColumn key={group.statusId} group={group} />
         ))}

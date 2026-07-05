@@ -34,7 +34,7 @@ export default function BoardPage() {
 
   return (
     <AppShell title="고객 요청 보드">
-      <div className="overflow-hidden rounded-xl border border-black/[0.08] bg-[#F5F5F7]">
+      <div className="overflow-hidden rounded-lg border border-[#E2E8F0] bg-white shadow-sm">
         <BoardToolbar
           query={query}
           onQueryChange={setQuery}
@@ -45,19 +45,21 @@ export default function BoardPage() {
           }}
           isRefreshing={tasksQuery.isRefetching || workflowsQuery.isRefetching}
         />
-        <div className="p-3">
+        <div className="p-6 bg-[#F9FBFD]">
           {error ? (
-            <div className="mb-3 rounded-lg border border-[#FF3B30]/30 bg-[#FF3B30]/5 px-4 py-3 text-sm text-[#FF3B30]">
+            <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
               {error instanceof Error ? error.message : '요청 처리에 실패했습니다.'}
             </div>
           ) : null}
           {showComposer ? (
-            <div className="mb-3">
+            <div className="mb-4">
               <NewTaskForm onCreated={() => setShowComposer(false)} />
             </div>
           ) : null}
           {isLoading ? (
-            <div className="rounded-lg bg-white p-6 text-sm text-[#6E6E73]">보드를 불러오는 중…</div>
+            <div className="rounded-lg border border-[#E2E8F0] bg-white p-8 text-center text-sm text-gray-500 shadow-sm">
+              보드를 불러오는 중…
+            </div>
           ) : (
             <KanbanBoard
               groups={groups}

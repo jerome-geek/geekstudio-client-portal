@@ -5,12 +5,12 @@ import type { DoorayTask } from '@/shared/models/task';
 import { formatDate } from '@/shared/lib/utils';
 import { openTaskDetailModal } from '@/components/tasks/task-detail-modal';
 
-const PRIORITY_STYLES: Record<string, { label: string; dot: string; text: string }> = {
-  highest: { label: '최상', dot: 'bg-[#FF3B30]', text: 'text-[#FF3B30]' },
-  high: { label: '높음', dot: 'bg-[#FF9500]', text: 'text-[#FF9500]' },
-  normal: { label: '보통', dot: 'bg-[#0071E3]', text: 'text-[#0071E3]' },
-  low: { label: '낮음', dot: 'bg-[#6E6E73]', text: 'text-[#6E6E73]' },
-  lowest: { label: '최하', dot: 'bg-[#AEAEB2]', text: 'text-[#AEAEB2]' }
+const PRIORITY_STYLES: Record<string, { label: string; bg: string; text: string; border: string }> = {
+  highest: { label: '최상', bg: 'bg-[#FFEBEB]', text: 'text-[#E11D48]', border: 'border-[#FCA5A5]/30' },
+  high: { label: '높음', bg: 'bg-[#FFF3E0]', text: 'text-[#EA580C]', border: 'border-[#FDBA74]/30' },
+  normal: { label: '보통', bg: 'bg-[#EFF6FF]', text: 'text-[#2563EB]', border: 'border-[#93C5FD]/30' },
+  low: { label: '낮음', bg: 'bg-[#F8FAFC]', text: 'text-[#475569]', border: 'border-[#CBD5E1]/30' },
+  lowest: { label: '최하', bg: 'bg-[#F3F4F6]', text: 'text-[#9CA3AF]', border: 'border-[#E5E7EB]/30' }
 };
 
 export function TaskCard({ task }: { task: DoorayTask }) {
@@ -27,22 +27,25 @@ export function TaskCard({ task }: { task: DoorayTask }) {
         event.preventDefault();
         openTaskDetailModal(task.id);
       }}
-      className="block rounded-xl border border-black/[0.08] bg-white p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] transition-shadow duration-150 ease-out hover:shadow-md"
+      className="block rounded-lg border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)] transition-all duration-200 hover:border-slate-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.05)]"
     >
-      <p className="text-[15px] font-semibold leading-snug text-[#1D1D1F]">{task.title}</p>
-      <div className="mt-3 flex items-center gap-2 text-[13px] text-[#6E6E73]">
-        <span className="font-medium text-[#0071E3]">{task.taskNumber ?? task.id}</span>
+      <p className="text-sm font-semibold leading-snug text-[#1C2434] line-clamp-2 hover:text-[#3C50E0] transition-colors">{task.title}</p>
+      
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <span className="rounded bg-slate-100 px-2 py-0.5 text-xs font-semibold font-mono text-slate-600">
+          #{task.taskNumber ?? task.id}
+        </span>
         {priority ? (
-          <span className={`flex items-center gap-1 ${priority.text}`}>
-            <span className={`h-2 w-2 rounded-full ${priority.dot}`} />
+          <span className={`inline-flex items-center rounded border px-2 py-0.5 text-[11px] font-bold ${priority.bg} ${priority.text} ${priority.border}`}>
             {priority.label}
           </span>
         ) : null}
       </div>
-      <div className="mt-2 flex items-center justify-between text-xs text-[#6E6E73]">
+
+      <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-[#8A99AD]">
         <span>등록 {formatDate(task.createdAt)}</span>
         {task.updatedAt && task.updatedAt !== task.createdAt ? (
-          <span>수정 {formatDate(task.updatedAt)}</span>
+          <span className="font-medium text-slate-400">수정됨</span>
         ) : null}
       </div>
     </Link>
