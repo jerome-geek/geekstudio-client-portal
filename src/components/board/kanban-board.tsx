@@ -9,6 +9,7 @@ import {
   useSensors,
   type DragEndEvent
 } from '@dnd-kit/core';
+import { useEffect, useRef } from 'react';
 import type { DoorayTaskBoardGroup, DoorayTaskStatus } from '@/shared/models/task';
 import { TaskCard } from '@/components/board/task-card';
 
@@ -17,11 +18,26 @@ function DraggableCard({ task }: { task: DoorayTaskBoardGroup['tasks'][number] }
     id: task.id
   });
 
+  // 드래그 후 mouseup 시 카드 내부 Link의 click이 발화해 상세로 이동하는 것 방지
+  const wasDragged = useRef(false);
+  useEffect(() => {
+    if (isDragging) {
+      wasDragged.current = true;
+    }
+  }, [isDragging]);
+
   return (
     <div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      onClickCapture={(event) => {
+        if (wasDragged.current) {
+          event.preventDefault();
+          event.stopPropagation();
+          wasDragged.current = false;
+        }
+      }}
       className={isDragging ? 'scale-[1.02] opacity-90 shadow-lg' : undefined}
       style={
         transform

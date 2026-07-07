@@ -36,7 +36,7 @@
 ## 5. Phase 1 검증
 
 - [x] 5.1 단위 테스트: 프록시 라우트(mock-dooray), 유효성 검증, `resolveProjectId()` env 경로
-- [ ] 5.2 E2E 수동 검증: 보드 → 업무 생성 → 드래그 상태 변경 → 상세 → 댓글 → 첨부
+- [x] 5.2 E2E 검증 완료(playwright 드래그 시뮬레이션 포함): 드래그로 진행 중↔완료 왕복, Dooray 상태 실반영 확인. 드롭 직후 카드 Link click이 발화해 상세로 이동하던 버그 발견·수정 (DraggableCard onClickCapture 억제)
 - [x] 5.3 `npm run lint && npm run test && npm run build` 통과
 
 ## 6. 고객사·인증 (Phase 2)
