@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   KanbanSquare,
   ListTodo,
+  TrendingUp,
   Menu,
   X,
   User,
@@ -36,6 +37,7 @@ export function AppShell({
     { name: '대시보드', href: '/', icon: LayoutDashboard },
     { name: '보드', href: '/board', icon: KanbanSquare },
     { name: '요청 목록', href: '#', icon: ListTodo },
+    { name: '트렌드', href: '/trends', icon: TrendingUp },
   ];
 
   return (
@@ -68,7 +70,10 @@ export function AppShell({
             </h3>
             <ul className="space-y-1.5">
               {navigation.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                  item.href !== '#' &&
+                  (pathname === item.href ||
+                    (item.href !== '/' && pathname.startsWith(item.href)));
                 return (
                   <li key={item.name}>
                     <Link
