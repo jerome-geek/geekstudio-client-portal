@@ -61,3 +61,12 @@ create policy "members can read own project mapping"
       where user_id = auth.uid()
     )
   );
+
+-- ---------------------------------------------------------------------------
+-- 권한: RLS 정책만으로는 부족하다. authenticated 롤에 테이블 SELECT 권한을
+-- 명시적으로 부여해야 PostgREST가 조회를 허용한다 (없으면 403).
+-- ---------------------------------------------------------------------------
+
+grant select on companies to authenticated;
+grant select on company_members to authenticated;
+grant select on company_dooray_projects to authenticated;

@@ -121,4 +121,5 @@ where c.name = '고객사명';
 | 로그인 후 403 "고객사 매핑이 없는 계정" | 매핑은 있는데 `active=true` 프로젝트 없음 | `company_dooray_projects.active` 확인 |
 | 보드는 뜨는데 업무 API 403/404 | 토큰 계정이 두레이 프로젝트 멤버 아님 | B-1의 2) 수행 |
 | 로그인 화면에 "로컬 개발 모드" 표시 | `NEXT_PUBLIC_SUPABASE_*` env 누락 | A-2 확인 후 dev 서버 재시작 |
+| 로그인은 성공하는데 이후 요청이 전부 403 | RLS 정책은 있지만 `authenticated` 롤에 테이블 SELECT 권한(GRANT) 자체가 없음 | schema.sql 맨 아래 `grant select ...` 3줄을 SQL Editor에서 실행 |
 | 무료 플랜 프로젝트 일시정지 | 1주일 미사용 pause 정책 | 대시보드에서 Resume, 운영 전환 시 Pro 플랜 검토 |

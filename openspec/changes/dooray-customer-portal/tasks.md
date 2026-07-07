@@ -41,17 +41,17 @@
 
 ## 6. 고객사·인증 (Phase 2)
 
-- [ ] 6.1 `supabase/schema.sql`에 3개 테이블 RLS 활성화 + 자기 회사 조회 정책 추가 완료 — Supabase 프로젝트 생성 후 적용만 남음
-- [ ] 6.2 `supabase/customer-onboarding.sql` 온보딩 스크립트 검증 (고객사·멤버·프로젝트 매핑 수동 등록)
+- [x] 6.1 RLS + GRANT 적용 완료 (Supabase 프로젝트 실연동, 2026-07-07) — RLS 정책만으로는 403 발생, `grant select ... to authenticated` 3줄 추가 필요했음 (schema.sql에 반영, docs/supabase-setup.md 트러블슈팅에 기록)
+- [x] 6.2 온보딩 절차 실계정으로 검증: 고객사 생성 → 두레이 프로젝트 매핑 → 계정 연결 → 로그인 성공 확인
 - [x] 6.3 로그인 화면·`login-form` 완성: 이메일/비밀번호, 실패 메시지 (Supabase 미설정 시 로컬 모드 안내)
 - [x] 6.4 `middleware.ts` 보호 경로 + API 401(resolveProjectId) + 401 응답 시 클라이언트 `/login` 리다이렉트(fetcher)
 - [x] 6.5 고객사 미매핑 계정 차단: 미들웨어 `/unauthorized` 리다이렉트 + API 403
 - [x] 6.6 로그아웃 버튼 (`logout-button.tsx`, Supabase 설정 시에만 노출)
 - [x] 6.7 `resolveProjectId()` Supabase 분기 구현: 세션 → 매핑 조회, 미인증 401/미매핑 403, Supabase 미설정 시 env 폴백
 - [x] 6.9 `resolveAuthorLabel()` 로그인 사용자명+고객사명 분기 구현 (`[홍길동 @ ACME]`) — Dooray 전용 운영 계정 토큰 교체는 운영 전환 시
-- [ ] 6.8 격리 테스트: 분기 단위 테스트 완료(401/403/매핑), 실계정 통합 검증은 Supabase 적용 후
+- [x] 6.8 격리 테스트: 단위 테스트(401/403/매핑) + 실계정 통합 검증 — 미매핑 계정 로그인 시 `/unauthorized` 리다이렉트 확인. 타 고객사 업무 접근 차단은 고객사 2개 이상 확보 후 재검증 권장
 
 ## 7. Phase 2 검증
 
-- [ ] 7.1 E2E 수동 검증: 로그인 → 보드 → 전체 흐름 → 로그아웃, 미매핑 계정 차단 확인
-- [ ] 7.2 `npm run lint && npm run test && npm run build` 통과
+- [x] 7.1 E2E 검증(playwright): 로그인 → 보드(실 두레이 데이터 로딩) → 로그아웃 → 재접근 시 `/login` 리다이렉트, 미매핑 계정 `/unauthorized` 확인
+- [x] 7.2 `npm run lint && npm run test && npm run build` 통과 (18 tests)
