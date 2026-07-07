@@ -32,6 +32,7 @@
 7. **급상승도 계산은 조회 시점 SQL** — 최근 3일 평균 vs 이전 7일 평균을 Postgres 쿼리(또는 뷰)로 계산. 별도 집계 테이블 없음 — 카테고리 수십 개 규모에선 실시간 계산으로 충분.
 8. **조회 API는 기존 프록시 패턴 준수** — `/api/trends/spikes`, `/api/trends/[categoryId]/series?days=30`, `/api/trends/[categoryId]/products`. 서버에서 Supabase 조회, `resolveProjectId` 같은 고객사 로직은 불필요(전사 공용).
 9. **insane-search 통합 방식은 PoC 선행** — 도구의 실제 인터페이스(CLI/라이브러리)와 네이버 쇼핑 베스트 페이지 응답 구조를 먼저 검증하고 파서를 확정한다. 차단 시 폴백: 크롤링 생략 운영.
+10. **수집 대상 카테고리는 관리 화면에서 선택** — 데이터랩 내부 트리 엔드포인트(`https://datalab.naver.com/shoppingInsight/getCategory.naver?cid={cid}`, JSON, 검증 완료 2026-07-07)를 서버 프록시(`GET /api/trends/categories/tree?cid=`)로 노출하고, `/trends/settings` 화면에서 트리를 펼쳐 카테고리를 선택·해제한다. 선택 시 `categories`에 upsert(`active=true`) + 대표 키워드 입력, 해제 시 `active=false`(시계열 보존). 수집기는 `active=true`만 수집. SQL seed 수동 등록 방식은 배제 — 코드 수정 없이 대상 변경 가능. 트리 호출에는 브라우저 UA·Referer 헤더 필요.
 
 ## Risks / Trade-offs
 
@@ -52,5 +53,5 @@
 ## Open Questions
 
 - 트렌드 메뉴 접근 범위: 로그인 사용자 전체 vs 내부(admin role)만 — 1차는 전체, 운영 전환 시 결정
-- 초기 대상 카테고리 목록과 대표 키워드 확정 (수영/스포츠 레저 하위 — 사용자 입력 필요)
-- 네이버 검색광고 API 계정 보유 여부 (광고주 계정 필요)
+- ~~초기 대상 카테고리 목록 확정~~ → 해결: 관리 화면(`/trends/settings`)에서 트리 탐색으로 직접 선택 (결정 10). 대표 키워드도 같은 화면에서 입력
+- ~~검색광고 API 계정 보유 여부~~ → 해결: 개인(비사업자)도 무료 발급 가능. 절차는 `docs/naver-searchad-api-setup.md`
