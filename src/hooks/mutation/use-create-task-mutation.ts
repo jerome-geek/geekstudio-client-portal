@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { taskKeys } from '@/hooks/queryKeys';
 import { requestJson } from '@/shared/lib/fetcher';
+import { appendSnapshotTask } from '@/shared/lib/notifications';
 import type { DoorayTask } from '@/shared/models/task';
 import type { CreateTaskInput } from '@/entities/task/model/types';
 
@@ -35,8 +36,17 @@ export function useCreateTaskMutation() {
 
       return task;
     },
-    onSuccess: () => {
+    onSuccess: (task) => {
       queryClient.invalidateQueries({ queryKey: taskKeys.board() });
+      // 자기 생성 업무가 알림으로 뜨지 않도록 기준선 선반영
+      appendSnapshotTask({
+        id: task.id,
+        title: task.title,
+        taskNumber: task.taskNumber,
+        statusId: task.status?.id,
+        statusName: task.status?.name,
+        commentCount: 0
+      });
     }
   });
 }

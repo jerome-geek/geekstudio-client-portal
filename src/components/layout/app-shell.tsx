@@ -4,14 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { LogoutButton } from '@/components/auth/logout-button';
+import { NotificationBell } from '@/components/layout/notification-bell';
 import { useMeQuery } from '@/hooks/query/use-me-query';
-import { 
-  LayoutDashboard, 
-  KanbanSquare, 
-  ListTodo, 
-  Menu, 
-  X, 
-  Bell, 
+import {
+  LayoutDashboard,
+  KanbanSquare,
+  ListTodo,
+  Menu,
+  X,
   User,
   Layers
 } from 'lucide-react';
@@ -112,11 +112,7 @@ export function AppShell({
             <div className="flex items-center gap-4">
               {actions}
               
-              {/* Notification Badge */}
-              <button className="relative rounded-full border border-gray-200 p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-50">
-                <Bell className="h-5 w-5" />
-                <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white"></span>
-              </button>
+              <NotificationBell />
 
               <div className="h-8 w-px bg-gray-200"></div>
 

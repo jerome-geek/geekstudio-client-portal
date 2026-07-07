@@ -55,3 +55,13 @@
 
 - [x] 7.1 E2E 검증(playwright): 로그인 → 보드(실 두레이 데이터 로딩) → 로그아웃 → 재접근 시 `/login` 리다이렉트, 미매핑 계정 `/unauthorized` 확인
 - [x] 7.2 `npm run lint && npm run test && npm run build` 통과 (18 tests)
+
+## 8. 브라우저 알림 (추가 구현)
+
+- [x] 8.1 `GET /api/notifications`: 업무 목록 + 업무별 댓글 수(logs totalCount) 집계 스냅샷
+- [x] 8.2 스냅샷 diff 엔진(`shared/lib/notifications.ts`): 새 업무/상태 변경/댓글 증가 감지, localStorage 저장, 단위 테스트 7개
+- [x] 8.3 헤더 벨 알림 센터(`notification-bell.tsx`): 60초 폴링, 미읽음 배지, 드롭다운, 클릭 시 상세 모달 + 읽음 처리
+- [x] 8.4 본인 행동 억제: 포털에서의 생성/댓글/상태 변경은 뮤테이션 성공 시 기준선 선반영
+- [x] 8.5 Notification API: 권한 허용 + 백그라운드 탭일 때 OS 알림
+- [x] 8.6 E2E 검증: 두레이 직접 댓글(운영팀 역할) → 포털 배지·드롭다운 표시 확인
+- [ ] 8.7 (후속, 배포 후) 두레이 프로젝트 웹훅(`POST /project/v1/projects/{id}/hooks`)으로 폴링 대체 + 고객 이메일 발송
